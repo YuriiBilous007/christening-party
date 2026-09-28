@@ -33,12 +33,4 @@
 .gift-cross-decoration .line-icon{width:36px;height:54px;stroke-width:1.1}
 @media(max-width:700px){.hero-cross-decoration{left:59px;bottom:24px;width:40px;height:57px}.hero-cross-decoration .line-icon{width:24px;height:36px}.gift-cross-decoration{right:6px;bottom:39px;width:48px;height:67px}.gift-cross-decoration .line-icon{width:28px;height:42px}}
 
-/* Plain crosses without flowers, badges, or decorative backing. */
-.hero-cross-decoration{left:5px;bottom:40px;width:75px;height:110px;background:none;border:0;border-radius:0;box-shadow:none;transform:none}
-.hero-cross-decoration .line-icon{width:65px;height:90px;stroke-width:1}
-.gifts-art:before{display:none}
-.gift-cross-decoration{position:static;width:100%;height:320px;background:none;border:0;border-radius:0;box-shadow:none;transform:none}
-.gift-cross-decoration .line-icon{width:140px;height:200px;stroke-width:.85}
-@media(max-width:700px){.hero-cross-decoration{left:4px;bottom:43px;width:54px;height:80px}.hero-cross-decoration .line-icon{width:45px;height:65px}.gift-cross-decoration{width:100%;height:220px}.gift-cross-decoration .line-icon{width:100px;height:145px}}
-
 .guest-section .section-heading{text-align:center}.guest-totals{display:flex;justify-content:center;gap:32px;margin:25px 0 35px;text-align:center;color:var(--muted);font-size:11px}.guest-totals strong{display:block;font:40px 'Cormorant Garamond',Georgia,serif;color:var(--gold)}.guest-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:0;margin:0}.guest-list li{display:flex;align-items:center;gap:17px;padding:20px;background:#f3e9dd;border-radius:9px}.guest-initial{display:grid;place-items:center;width:45px;height:45px;flex-shrink:0;border-radius:50%;background:#ead7c5;color:var(--gold);font:28px 'Cormorant Garamond',Georgia,serif}.guest-list h3{font-size:25px;overflow-wrap:anywhere}.guest-list p{font-size:11px;color:var(--muted);margin-top:5px}.guest-empty{text-align:center;color:var(--muted);font-size:13px}@media(max-width:700px){.guest-list{grid-template-columns:1fr}.guest-totals{gap:20px}.guest-totals span{font-size:10px}.guest-list li{padding:16px}}
