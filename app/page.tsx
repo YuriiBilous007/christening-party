@@ -361,9 +361,6 @@ export default function Home() {
                   sizes="(max-width: 700px) 70vw, 350px"
                   className="portrait-photo"
                 />
-                <span className="photo-name-ribbon" aria-hidden="true">
-                  Тереза
-                </span>
               </>
             ) : (
               <div className="photo-placeholder">
