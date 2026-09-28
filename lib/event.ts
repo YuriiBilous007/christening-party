@@ -2,7 +2,7 @@ export const event = {
   name: 'Терези', date: '25 жовтня 2026',
   start: '2026-10-25T14:00:00-05:00', // America/Chicago: CDT on this date.
   churchAddress: '1475 W Algonquin Rd, Palatine, IL 60067',
-  restaurant: 'Passage Banquets & Events',
+  restaurant: 'Pasage',
   restaurantAddress: '577 Waukegan Rd, Northbrook, IL 60062',
   photo: '/tereza-portrait.png', // Edited portrait with the face partly covered in the asset itself.
 };
@@ -16,6 +16,6 @@ export function calendarFile() {
     'DTSTART:20261025T190000Z','SUMMARY:Хрестини Терези — хрещення',
     `LOCATION:${event.churchAddress.replaceAll(',', '\\,')}`,'END:VEVENT',
     'BEGIN:VEVENT','UID:tereza-celebration-20261025','DTSTAMP:20260928T120000Z',
-    'DTSTART:20261025T210000Z','SUMMARY:Хрестини Терези — святкування в Пасажі',
+    'DTSTART:20261025T210000Z','SUMMARY:Хрестини Терези — святкування в Pasage',
     `LOCATION:${event.restaurantAddress.replaceAll(',', '\\,')}`,'END:VEVENT','END:VCALENDAR',''].join('\r\n');
 }
