@@ -980,6 +980,42 @@ footer a {
   font-size: 12px;
   color: var(--muted);
 }
+.gift-request {
+  margin-top: 24px;
+  padding: 19px 20px 20px;
+  border: 1px solid #d9b9a3;
+  border-left: 4px solid var(--gold);
+  border-radius: 4px;
+  background: #fff9f2;
+  box-shadow: 0 5px 18px #5b443912;
+}
+.gift-request .eyebrow {
+  display: block;
+  margin-bottom: 10px;
+}
+.gift-request p {
+  max-width: 480px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.gift-request p + p {
+  margin-top: 12px;
+}
+.gift-request strong {
+  color: var(--ink);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+@media (max-width: 700px) {
+  .gift-request {
+    padding: 16px 15px 17px;
+  }
+  .gift-request strong {
+    font-size: 19px;
+  }
+}
 .rsvp-background {
   background: var(--cream);
   border-radius: 80px 80px 0 0;
