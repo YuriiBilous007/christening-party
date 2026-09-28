@@ -1,6 +1,7 @@
 'use client';
 import { FormEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
+import GuestList from './components/GuestList';
 import { event, countdown, calendarFile } from '../lib/event';
 
 function Icon({ name }: { name: 'cross' | 'arrow' | 'down' | 'up' | 'plus' }) {
@@ -14,7 +15,7 @@ function Icon({ name }: { name: 'cross' | 'arrow' | 'down' | 'up' | 'plus' }) {
   return <svg className="line-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d={paths[name]}/></svg>;
 }
 
-const formId = process.env.NEXT_PUBLIC_FORMSPREE_RSVP_ID;
+
 const childrenHint = 'Підкажіть, будь ласка, кількість і вік дітей, щоб ми могли подбати про місця за окремим дитячим столиком';
 function Countdown() {
   const [remaining, setRemaining] = useState<number[] | null>(null);
@@ -22,6 +23,8 @@ function Countdown() {
   return <section className="countdown-section" id="countdown" aria-label="Зворотний відлік"><p className="eyebrow">ДО НАШОЇ СВІТЛОЇ ЗУСТРІЧІ</p><div className="countdown">{['ДНІВ', 'ГОДИН', 'ХВИЛИН', 'СЕКУНД'].map((label, i) => <div key={label}><strong>{remaining ? String(remaining[i]).padStart(2, '0') : '—'}</strong><span>{label}</span></div>)}</div>{remaining?.every(n => n === 0) && <p>Цей особливий день настав ♡</p>}</section>;
 }
 function RSVP() {
+  const [available, setAvailable] = useState(false);
+  useEffect(() => { fetch('/api/rsvp').then(r => r.ok ? r.json() : null).then(data => setAvailable(Boolean(data?.configured))).catch(() => {}); }, []);
   const [name, setName] = useState('');
   const [attendance, setAttendance] = useState('yes');
   const [adults, setAdults] = useState('1');
@@ -33,12 +36,13 @@ function RSVP() {
     if (!name.trim()) return;
     const childAges = attendance === 'yes' && withChildren === 'yes' ? ages.map(Number) : [];
     const payload = { name: name.trim(), attendance, adults: attendance === 'yes' ? Number(adults) : 0, withChildren: childAges.length > 0, childrenCount: childAges.length, childrenAges: childAges, _subject: 'Хрестини Терези — відповідь гостя' };
-    if (!formId) { setStatus('preview'); return; }
+    if (!available) { setStatus('preview'); return; }
     setStatus('sending');
     try {
-      const response = await fetch(`https://formspree.io/f/${formId}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) });
+      const response = await fetch('/api/rsvp', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) });
       if (!response.ok) throw new Error('Submission failed');
       setStatus('sent');
+      window.dispatchEvent(new Event('rsvp-saved'));
     } catch { setStatus('error'); }
   }
   if (status === 'sent') return <div className="success" role="status"><span>♡</span><h3>Дякуємо за відповідь!</h3><p>{attendance === 'yes' ? 'Будемо раді розділити з вами цей світлий день.' : 'Дякуємо, що повідомили. Відчуваємо ваше тепло навіть на відстані.'}</p></div>;
@@ -50,9 +54,9 @@ function RSVP() {
     <fieldset aria-describedby="children-hint"><legend>Чи будете з дітьми?</legend><div className="choices">{[['yes', 'Так'], ['no', 'Ні']].map(([value, label]) => <label key={value} className={withChildren === value ? 'selected' : ''}><input type="radio" name="withChildren" value={value} checked={withChildren === value} onChange={() => setWithChildren(value)}/>{label}</label>)}</div></fieldset>
     {withChildren === 'yes' && <div className="children-fields"><label htmlFor="children-count">Кількість дітей</label><select id="children-count" value={ages.length} aria-describedby="children-hint" onChange={e => setAges(previous => Array.from({length: Number(e.target.value)}, (_, i) => previous[i] ?? ''))}>{Array.from({length: 20}, (_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}</select><div className="age-grid">{ages.map((age, i) => <div key={i}><label htmlFor={`age-${i}`}>Вік дитини {i+1}</label><select id={`age-${i}`} required value={age} onChange={e => setAges(previous => previous.map((v, j) => j === i ? e.target.value : v))}><option value="">Оберіть вік</option><option value="0">До 1 року</option>{Array.from({length: 17}, (_, n) => <option key={n+1} value={n+1}>{n+1} {n===0?'рік':n<4?'роки':'років'}</option>)}</select></div>)}</div></div>}
     <p className="children-hint" id="children-hint">{childrenHint}</p></>}
-    <button className="button" type="submit">{status === 'sending' ? 'Надсилаємо…' : formId ? 'Підтвердити присутність' : 'Переглянути відповідь'} <span><Icon name="arrow"/></span></button>
+    <p className="children-hint">Після підтвердження ваше ім’я та кількість гостей з’являться у відкритому списку «Будуть із нами». Вік дітей бачать лише організатори.</p><button className="button" type="submit">{status === 'sending' ? 'Надсилаємо…' : available ? 'Підтвердити присутність' : 'Переглянути відповідь'} <span><Icon name="arrow"/></span></button>
     </fieldset>
-    {!formId && <p className="form-note">Попередній перегляд: надсилання відповідей ще не підключене.</p>}
+    {!available && <p className="form-note">Попередній перегляд: надсилання відповідей ще не підключене.</p>}
     {status === 'preview' && <p role="status" className="form-note">{name}, обрано: {attendance === 'yes' ? `${adults} дорослих; дітей: ${withChildren === 'yes' ? ages.length : 0}` : 'не зможу бути'}. Відповідь не надіслана.</p>}
     {status === 'error' && <p role="alert" className="error">Не вдалося надіслати відповідь. Спробуйте ще раз — введені дані збережені у формі.</p>}
   </form>;
@@ -71,6 +75,7 @@ export default function Home() {
   <section className="section day-section" id="day"><div className="section-heading"><p className="eyebrow">25 ЖОВТНЯ 2026</p><h2>Програма <em>нашого дня</em></h2><p>Увесь час вказано за місцевим часом Чикаго.</p></div><div className="day-grid"><article className="place"><span className="step">01 / ХРЕЩЕННЯ</span><p className="time">14:00 <small>2 PM</small></p><h3>Таїнство хрещення</h3><p className="place-note">Для всіх, хто бажає долучитися до церемонії.</p><p className="address">{event.churchAddress}</p><a className="map-link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.churchAddress)}`} target="_blank" rel="noopener noreferrer">Відкрити в Google Maps <Icon name="arrow"/></a></article><article className="place"><span className="step">02 / СВЯТКУВАННЯ</span><p className="time">16:00 <small>4 PM</small></p><h3>Ресторан «{event.restaurant}»</h3><p className="place-note">Святкування у колі найрідніших</p><p className="address">{event.restaurantAddress}</p><a className="map-link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.restaurantAddress)}`} target="_blank" rel="noopener noreferrer">Відкрити в Google Maps <Icon name="arrow"/></a></article></div><button className="calendar" onClick={calendar}><Icon name="plus"/> Додати до календаря</button></section>
   <section className="gifts-section" id="gifts"><div className="gifts-art"><div className="gift-cross-decoration" aria-hidden="true"><Icon name="cross"/></div><span>з любов’ю до дрібниць</span></div><div className="gifts"><span className="gift-heart" aria-hidden="true">♡</span><p className="eyebrow">КІЛЬКА СЛІВ ВІД НАШОЇ РОДИНИ</p><h2>Найцінніше — <em>бути разом</em></h2><p>Будемо щасливі, якщо ви розділите з нами світле свято хрестин нашої Терези. Ваша присутність, тепло та щирі побажання — найцінніший подарунок для нашої родини.</p><p>Якщо ви захочете додатково привітати нашу донечку, будемо вдячні за подарунок у конверті. Просимо обійтися без квітів, іграшок, підгузків та інших подарунків. Дякуємо за розуміння й за те, що будете поруч у цей особливий день!</p></div></section>
   <div className="rsvp-background"><section className="section rsvp-section" id="rsvp"><div className="rsvp-copy"><p className="eyebrow">ЧЕКАЄМО НА ВАШУ ВІДПОВІДЬ</p><h2>Ви будете<br/>{' '}<em>з нами?</em></h2><p>Підтвердьте, будь ласка, присутність, щоб ми могли подбати про комфорт кожного гостя — і великого, і маленького.</p><span className="signature">Для вас завжди є місце ♡</span></div><RSVP/></section></div>
+  <GuestList/>
   <footer><span className="footer-name">Тереза</span><p>25 жовтня 2026 · З любов’ю, наша родина</p><a href="#home">До початку <Icon name="up"/></a></footer>
  </main>;
 }
