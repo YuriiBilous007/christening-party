@@ -11,9 +11,9 @@ async function notifyByEmail(reply: Reply) {
     .split(",")
     .map((email) => email.trim())
     .filter(Boolean);
-  if (!apiKey || !from || recipients.length !== 2) {
+  if (!apiKey || !from || recipients.length < 1 || recipients.length > 2) {
     console.error(
-      "RSVP email notifications require Resend credentials and exactly two recipient emails.",
+      "RSVP email notifications require Resend credentials and one or two recipient emails.",
     );
     return false;
   }
