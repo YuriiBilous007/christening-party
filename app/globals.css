@@ -543,6 +543,7 @@ footer p {
   margin: 13px 0;
 }
 .music-credit {
+  display: none;
   max-width: 760px;
   margin: 12px auto !important;
   font-size: 8px;
