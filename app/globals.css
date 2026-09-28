@@ -25,3 +25,10 @@
 .gift-cross-decoration{height:350px;display:grid;place-items:center;color:var(--gold)}
 .gift-cross-decoration .line-icon{width:160px;height:220px;stroke-width:.65}
 @media(max-width:700px){.hero-cross-decoration{left:2px;bottom:36px;width:77px;height:106px;border-radius:45px 45px 30px 30px}.hero-cross-decoration .line-icon{width:46px;height:65px}.gift-cross-decoration{height:250px}.gift-cross-decoration .line-icon{width:120px;height:170px}}
+
+/* Small crosses complement the floral arrangements. */
+.hero-cross-decoration{left:72px;bottom:17px;width:48px;height:67px;border-radius:28px 28px 17px 17px;transform:rotate(-8deg);z-index:1}
+.hero-cross-decoration .line-icon{width:28px;height:42px;stroke-width:1.2}
+.gift-cross-decoration{position:absolute;right:23px;bottom:54px;width:62px;height:86px;border:1px solid #dbc0a5;border-radius:36px 36px 20px 20px;background:#f6eddf;transform:rotate(8deg);box-shadow:0 5px 18px #7250390b}
+.gift-cross-decoration .line-icon{width:36px;height:54px;stroke-width:1.1}
+@media(max-width:700px){.hero-cross-decoration{left:59px;bottom:24px;width:40px;height:57px}.hero-cross-decoration .line-icon{width:24px;height:36px}.gift-cross-decoration{right:6px;bottom:39px;width:48px;height:67px}.gift-cross-decoration .line-icon{width:28px;height:42px}}
