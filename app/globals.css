@@ -11,3 +11,10 @@
 .navigation{gap:16px}.brand{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0;line-height:1.1}.brand span{display:inline-block}.navigation>div{align-items:center;min-width:0}.navigation>div a:last-child{display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;line-height:1.4;min-height:44px}.nav-label-short{display:none}
 @media(max-width:700px){.navigation{height:76px;padding:0 20px;gap:12px}.brand{font-size:25px;gap:4px}.brand span{font-size:20px}.nav-label-full{display:none}.nav-label-short{display:inline}.navigation>div a:last-child{font-size:11px;padding:10px 14px}.hero{padding-top:22px}.hero .eyebrow{font-size:8px;letter-spacing:1.7px}}
 @media(max-width:380px){.navigation{padding:0 16px;gap:8px}.brand{font-size:22px}.brand span{font-size:17px}.navigation>div a:last-child{font-size:10px;padding:10px 11px}}
+
+/* Draw icons consistently instead of using platform emoji glyphs. */
+.line-icon{display:inline-block;width:1em;height:1em;vertical-align:-.12em;flex-shrink:0}
+.button .line-icon,.navigation>div .line-icon,.map-link .line-icon,footer a .line-icon,.calendar .line-icon{width:17px;height:17px}
+.button>span,.navigation>div a:last-child>span[aria-hidden]{display:inline-flex;align-items:center}
+.map-link{gap:10px}.calendar .line-icon{margin-right:6px}.art-star,.rsvp-flower{line-height:1}
+@media(max-width:700px){.rsvp-copy h2 br{display:block}.rsvp-copy h2 em{white-space:nowrap}}
