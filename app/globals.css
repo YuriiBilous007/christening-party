@@ -18,3 +18,10 @@
 .button>span,.navigation>div a:last-child>span[aria-hidden]{display:inline-flex;align-items:center}
 .map-link{gap:10px}.calendar .line-icon{margin-right:6px}.art-star,.rsvp-flower{line-height:1}
 @media(max-width:700px){.rsvp-copy h2 br{display:block}.rsvp-copy h2 em{white-space:nowrap}}
+
+/* Crosses replace the two floral arrangements. */
+.hero-cross-decoration{position:absolute;left:-8px;bottom:35px;width:105px;height:145px;display:grid;place-items:center;color:var(--gold);background:#f6eddf;border:1px solid #dbc0a5;border-radius:65px 65px 40px 40px;transform:rotate(-12deg);box-shadow:0 8px 24px #7250390b}
+.hero-cross-decoration .line-icon{width:65px;height:90px;stroke-width:.85}
+.gift-cross-decoration{height:350px;display:grid;place-items:center;color:var(--gold)}
+.gift-cross-decoration .line-icon{width:160px;height:220px;stroke-width:.65}
+@media(max-width:700px){.hero-cross-decoration{left:2px;bottom:36px;width:77px;height:106px;border-radius:45px 45px 30px 30px}.hero-cross-decoration .line-icon{width:46px;height:65px}.gift-cross-decoration{height:250px}.gift-cross-decoration .line-icon{width:120px;height:170px}}
