@@ -143,7 +143,6 @@ function RSVP() {
           title="Англійські літери A–Z, пробіл, дефіс або апостроф"
           aria-describedby="name-hint"
           maxLength={100}
-          placeholder="Anna Smith"
         />
         <p id="name-hint" className="children-hint">Ім’я та прізвище — англійськими літерами (A–Z).</p>
         <fieldset>
