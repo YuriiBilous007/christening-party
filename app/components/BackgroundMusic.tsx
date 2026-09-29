@@ -15,6 +15,9 @@ export default function BackgroundMusic() {
     function removeListeners() {
       document.removeEventListener("click", startOnInteraction);
       document.removeEventListener("touchend", startOnInteraction);
+      document.removeEventListener("touchstart", startOnInteraction);
+      document.removeEventListener("wheel", startOnInteraction);
+      document.removeEventListener("scroll", startOnInteraction);
       document.removeEventListener("keydown", startOnInteraction);
     }
     function startOnInteraction(event: Event) {
@@ -35,6 +38,10 @@ export default function BackgroundMusic() {
     audio.volume = 0.1;
     document.addEventListener("click", startOnInteraction);
     document.addEventListener("touchend", startOnInteraction, { passive: true });
+    document.addEventListener("touchstart", startOnInteraction, { passive: true });
+    document.addEventListener("wheel", startOnInteraction, { passive: true, once: true });
+    // Try on the first scroll only, rather than repeatedly calling play while scrolling.
+    document.addEventListener("scroll", startOnInteraction, { passive: true, once: true });
     document.addEventListener("keydown", startOnInteraction);
     attemptPlayback();
     return () => {
