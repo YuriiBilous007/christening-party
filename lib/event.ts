@@ -3,7 +3,7 @@ export const event = {
   date: "25 жовтня 2026",
   start: "2026-10-25T14:00:00-05:00", // America/Chicago: CDT on this date.
   churchAddress: "1475 W Algonquin Rd, Palatine, IL 60067",
-  restaurant: "Pasage",
+  restaurant: "Passage",
   restaurantAddress: "577 Waukegan Rd, Northbrook, IL 60062",
   photo: "/tereza-ribbon-lowered.png",
 };
@@ -32,7 +32,7 @@ export function calendarFile() {
     "UID:tereza-celebration-20261025",
     "DTSTAMP:20260928T120000Z",
     "DTSTART:20261025T210000Z",
-    "SUMMARY:Хрестини Терези — святкування в Pasage",
+    "SUMMARY:Хрестини Терези — святкування в Passage",
     `LOCATION:${event.restaurantAddress.replaceAll(",", "\\,")}`,
     "END:VEVENT",
     "END:VCALENDAR",

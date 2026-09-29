@@ -1,4 +1,5 @@
 "use client";
+import { NAME_PATTERN, isEnglishName } from "../lib/rsvp";
 import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import GuestList from "./components/GuestList";
@@ -79,7 +80,7 @@ function RSVP() {
   >("idle");
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!name.trim()) return;
+    if (!isEnglishName(name)) return;
     const childAges =
       attendance === "yes" && withChildren === "yes" ? ages.map(Number) : [];
     const payload = {
@@ -134,13 +135,17 @@ function RSVP() {
           value={name}
           onChange={(e) => {
             setName(e.target.value);
+            e.target.setCustomValidity(e.target.value && !isEnglishName(e.target.value) ? "Введіть ім’я та прізвище англійськими літерами (A–Z)." : "");
             setStatus("idle");
           }}
           required
-          pattern=".*\S.*"
+          pattern={NAME_PATTERN}
+          title="Англійські літери A–Z, пробіл, дефіс або апостроф"
+          aria-describedby="name-hint"
           maxLength={100}
-          placeholder="Ваше ім’я та прізвище"
+          placeholder="Anna Smith"
         />
+        <p id="name-hint" className="children-hint">Ім’я та прізвище — англійськими літерами (A–Z).</p>
         <fieldset>
           <legend>Чи плануєте бути на святі?</legend>
           <div className="choices">
@@ -317,13 +322,6 @@ export default function Home() {
         </a>
         <div>
           <a href="#day">Програма</a>
-          <a href="#rsvp">
-            <span className="nav-label-full">Підтвердити присутність</span>
-            <span className="nav-label-short">Буду поруч</span>{" "}
-            <span aria-hidden="true">
-              <Icon name="arrow" />
-            </span>
-          </a>
         </div>
       </nav>
       <header className="hero" id="home">
@@ -339,13 +337,6 @@ export default function Home() {
             Запрошуємо на хрестини нашої Терези —<br />
             розділити тепло, обійми та її світлий день.
           </p>
-          <a className="button" href="#rsvp">
-            Я буду поруч{" "}
-            <span>
-              <Icon name="arrow" />
-            </span>
-          </a>
-          <p className="signature">З любов’ю, наша родина</p>
         </div>
         <div className="hero-art">
           <div className="organic-shape" />

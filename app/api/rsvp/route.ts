@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { randomUUID } from "node:crypto";
 import { parseReply, type Reply } from "../../../lib/rsvp";
 export const dynamic = "force-dynamic";
@@ -111,23 +110,15 @@ export async function POST(request: Request) {
     reply = parseReply(JSON.parse(text));
   } catch {
     return Response.json(
-      { error: "Перевірте ім’я, кількість дорослих та вік дітей." },
+      { error: "Вкажіть ім’я англійськими літерами (A–Z) та перевірте кількість дорослих і вік дітей." },
       { status: 400 },
     );
   }
   try {
-    const jar = await cookies();
-    const existing = jar.get("tereza-rsvp-id")?.value;
-    const id =
-      existing &&
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-        existing,
-      )
-        ? existing
-        : randomUUID();
-    const response = await database("christening_rsvps?on_conflict=id", {
+    const id = randomUUID();
+    const response = await database("christening_rsvps", {
       method: "POST",
-      headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+      headers: { Prefer: "return=minimal" },
       body: JSON.stringify({
         id,
         name: reply.name,
@@ -138,13 +129,6 @@ export async function POST(request: Request) {
       }),
     });
     if (!response.ok) throw new Error("Save failed");
-    jar.set("tereza-rsvp-id", id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 365,
-    });
     const emailNotificationsSent = await notifyByEmail(reply);
     return Response.json({ ok: true, emailNotificationsSent });
   } catch {
