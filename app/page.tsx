@@ -351,9 +351,10 @@ export default function Home() {
               <>
                 <Image
                   src={event.photo}
-                  alt="Тереза солодко спить у сповиванні"
+                  alt="Тереза у сповиванні із золотим написом її імені"
                   fill
-                  sizes="(max-width: 700px) 70vw, 350px"
+                  sizes="(max-width: 700px) 92vw, 600px"
+                  preload
                   className="portrait-photo"
                 />
               </>
@@ -375,7 +376,7 @@ export default function Home() {
           <div className="hero-cross-decoration" aria-hidden="true">
             <Icon name="cross" />
           </div>
-          <span className="baby-caption">оточена любов’ю ♡</span>
+          
           <span className="round-label">
             <b>25.10</b>
             <span>2026</span>

@@ -5,7 +5,7 @@ export const event = {
   churchAddress: "1475 W Algonquin Rd, Palatine, IL 60067",
   restaurant: "Passage",
   restaurantAddress: "577 Waukegan Rd, Northbrook, IL 60062",
-  photo: "/tereza-ribbon-lowered.png",
+  photo: "/tereza-gold-hero.png",
 };
 export function countdown(now: number) {
   const total = Math.max(0, Math.floor((Date.parse(event.start) - now) / 1000));
