@@ -26,6 +26,7 @@ async function notifyByEmail(reply: Reply) {
     `Ім’я: ${reply.name.replace(/[\r\n\t]+/g, " ")}`,
     `Присутність: ${reply.attendance === "yes" ? "будуть" : "не зможуть бути"}`,
     `Дорослих: ${reply.adults}`,
+    ...reply.adultNames.map((name, i) => `Дорослий ${i+1}: ${name}`),
     `Діти: ${children}`,
   ].join("\n");
   const results = await Promise.all(
@@ -124,6 +125,9 @@ export async function POST(request: Request) {
         name: reply.name,
         attendance: reply.attendance,
         adults: reply.adults,
+        adult_2_name: reply.adultNames[1] ?? null,
+        adult_3_name: reply.adultNames[2] ?? null,
+        adult_4_name: reply.adultNames[3] ?? null,
         children_count: reply.childrenAges.length,
         children_ages: reply.childrenAges,
       }),

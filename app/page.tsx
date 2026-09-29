@@ -73,6 +73,7 @@ function RSVP() {
   const [name, setName] = useState("");
   const [attendance, setAttendance] = useState("yes");
   const [adults, setAdults] = useState("1");
+  const [companions, setCompanions] = useState<string[]>([]);
   const [withChildren, setWithChildren] = useState("no");
   const [ages, setAges] = useState<string[]>([""]);
   const [status, setStatus] = useState<
@@ -87,6 +88,7 @@ function RSVP() {
       name: name.trim(),
       attendance,
       adults: attendance === "yes" ? Number(adults) : 0,
+      adultNames: attendance === "yes" ? [name.trim(), ...companions.map(n => n.trim())] : [],
       withChildren: childAges.length > 0,
       childrenCount: childAges.length,
       childrenAges: childAges,
@@ -174,16 +176,20 @@ function RSVP() {
         {attendance === "yes" && (
           <>
             <label htmlFor="adults">Кількість дорослих (включно з вами)</label>
-            <input
-              id="adults"
-              type="number"
-              min="1"
-              max="50"
-              step="1"
-              required
-              value={adults}
-              onChange={(e) => setAdults(e.target.value)}
-            />
+            <select id="adults" required value={adults} onChange={e => {
+              setAdults(e.target.value);
+              setCompanions(previous => Array.from({length:Number(e.target.value)-1}, (_, i) => previous[i] ?? ""));
+            }}>
+              {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
+            {companions.map((person, i) => <div key={i}>
+              <label htmlFor={`adult-${i+2}`}>Ім’я та прізвище дорослого {i+2}</label>
+              <input id={`adult-${i+2}`} value={person} required maxLength={100} pattern={NAME_PATTERN} title="Англійські літери A–Z, пробіл, дефіс або апостроф" aria-describedby="name-hint" onChange={e => {
+                const value=e.target.value;
+                e.target.setCustomValidity(value && !isEnglishName(value) ? "Введіть ім’я та прізвище англійськими літерами (A–Z)." : "");
+                setCompanions(previous => previous.map((n,j) => i===j ? value : n));
+              }}/>
+            </div>)}
             <fieldset aria-describedby="children-hint">
               <legend>Чи будете з дітьми?</legend>
               <div className="choices">

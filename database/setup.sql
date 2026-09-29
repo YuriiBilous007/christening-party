@@ -15,3 +15,8 @@ revoke all on public.christening_rsvps from anon, authenticated;
 grant select, insert, update on public.christening_rsvps to service_role;
 
 
+-- Separate companion names; first adult remains in the existing name column.
+alter table public.christening_rsvps
+  add column if not exists adult_2_name text,
+  add column if not exists adult_3_name text,
+  add column if not exists adult_4_name text;
