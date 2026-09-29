@@ -39,7 +39,7 @@ export default function BackgroundMusic() {
     <>
       <audio
         ref={audioRef}
-        src="/lysenko-by-a-cradle.mp3"
+        src="/music.mp3"
         preload="none"
         loop
       />
