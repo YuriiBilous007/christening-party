@@ -1,3 +1,4 @@
+export const filterEnglishName = (value: string) => value.replace(/[^A-Za-z '-]/g, "");
 export const NAME_PATTERN = "[A-Za-z]+(?:[ '\\-][A-Za-z]+)*";
 export const isEnglishName = (name: string) => new RegExp(`^(?:${NAME_PATTERN})$`).test(name.trim());
 export type Reply = {name:string; attendance:'yes'|'no'; adults:number; adultNames:string[]; childrenAges:number[]};

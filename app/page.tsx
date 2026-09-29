@@ -1,5 +1,5 @@
 "use client";
-import { NAME_PATTERN, isEnglishName } from "../lib/rsvp";
+import { NAME_PATTERN, isEnglishName, filterEnglishName } from "../lib/rsvp";
 import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import GuestList from "./components/GuestList";
@@ -62,6 +62,21 @@ function Countdown() {
     </section>
   );
 }
+function readEnglishName(input: HTMLInputElement) {
+  const original = input.value;
+  const caret = input.selectionStart;
+  const value = filterEnglishName(original);
+  if (value !== original) {
+    input.value = value;
+    if (caret !== null) {
+      const position = filterEnglishName(original.slice(0, caret)).length;
+      input.setSelectionRange(position, position);
+    }
+  }
+  input.setCustomValidity(value && !isEnglishName(value) ? "Введіть ім’я та прізвище англійськими літерами (A–Z)." : "");
+  return value;
+}
+
 function RSVP() {
   const [available, setAvailable] = useState(false);
   useEffect(() => {
@@ -136,8 +151,7 @@ function RSVP() {
           autoComplete="name"
           value={name}
           onChange={(e) => {
-            setName(e.target.value);
-            e.target.setCustomValidity(e.target.value && !isEnglishName(e.target.value) ? "Введіть ім’я та прізвище англійськими літерами (A–Z)." : "");
+            setName(readEnglishName(e.currentTarget));
             setStatus("idle");
           }}
           required
@@ -185,8 +199,7 @@ function RSVP() {
             {companions.map((person, i) => <div key={i}>
               <label htmlFor={`adult-${i+2}`}>Ім’я та прізвище {["другого", "третього", "четвертого"][i]} дорослого</label>
               <input id={`adult-${i+2}`} value={person} required maxLength={100} pattern={NAME_PATTERN} title="Англійські літери A–Z, пробіл, дефіс або апостроф" aria-describedby="name-hint" onChange={e => {
-                const value=e.target.value;
-                e.target.setCustomValidity(value && !isEnglishName(value) ? "Введіть ім’я та прізвище англійськими літерами (A–Z)." : "");
+                const value=readEnglishName(e.currentTarget);
                 setCompanions(previous => previous.map((n,j) => i===j ? value : n));
               }}/>
             </div>)}

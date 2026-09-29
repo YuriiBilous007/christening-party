@@ -13,9 +13,10 @@ export const metadata: Metadata = {
     siteName: "Christening of Teresa",
     images: [
       {
-        url: "/previev.png",
-        width: 6198,
-        height: 4132,
+        url: "/social-preview.jpg",
+        width: 1200,
+        height: 800,
+        type: "image/jpeg",
         alt: "Teresa sleeping peacefully in her blanket",
       },
     ],
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
     title: "Christening of Teresa",
     description:
       "Join us to celebrate Teresa’s christening on October 25, 2026.",
-    images: ["/previev.png"],
+    images: ["/social-preview.jpg"],
   },
 };
 export default function RootLayout({
