@@ -1604,16 +1604,3 @@ footer a .line-icon,
     height: 42px;
   }
 }
-
-/* Preserve the full lettering in the supplied landscape portrait. */
-.hero{grid-template-columns:.95fr 1.2fr;gap:38px}
-.hero-art{width:100%;height:auto;aspect-ratio:3/2;margin:0;transform:none}
-.hero-art .photo-frame{position:relative;inset:auto;width:100%;height:100%;margin:0;aspect-ratio:3/2;border:0;border-radius:12px;transform:none;overflow:hidden;box-shadow:0 12px 35px #5c3d2810}
-.hero-art .portrait-photo{object-fit:contain;object-position:center}
-.hero-art .arch-outline{inset:-12px;width:auto;height:auto;border-radius:22px;transform:rotate(-3deg)}
-.hero-art .organic-shape{inset:15% -3% -8% 8%;width:auto;height:auto}
-.hero-art .hero-pampas{width:100px;left:-40px;bottom:-70px;z-index:-1}
-.hero-art .hero-cross-decoration{left:-19px;bottom:-40px}
-.hero-art .round-label{right:-9px;bottom:-65px;width:78px;height:78px;font-size:7px}
-@media(min-width:701px) and (max-width:1000px){.hero{gap:25px}.hero-art{transform:none}.hero h1{font-size:48px}}
-@media(max-width:700px){.hero{grid-template-columns:1fr;gap:30px;padding-bottom:112px}.hero-art{width:100%;height:auto;aspect-ratio:3/2;margin:0;transform:none}.hero-art .photo-frame{width:100%;height:100%;border-radius:8px}.hero-art .arch-outline{inset:-7px;border-radius:15px}.hero-art .hero-pampas{width:80px;left:-24px;bottom:-55px}.hero-art .hero-cross-decoration{left:0;bottom:-40px}.hero-art .round-label{width:64px;height:64px;right:3px;bottom:-48px}.hero-art .round-label b{font-size:22px}}
