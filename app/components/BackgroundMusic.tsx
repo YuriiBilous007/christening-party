@@ -4,24 +4,49 @@ import { useEffect, useRef, useState } from "react";
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const autoplayAttemptedRef = useRef(false);
+  const manualControlRef = useRef(false);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    if (autoplayAttemptedRef.current) return;
-    autoplayAttemptedRef.current = true;
     const audio = audioRef.current;
     if (!audio) return;
+    let disposed = false;
+    let started = false;
+    function removeListeners() {
+      document.removeEventListener("click", startOnInteraction);
+      document.removeEventListener("touchend", startOnInteraction);
+      document.removeEventListener("keydown", startOnInteraction);
+    }
+    function startOnInteraction(event: Event) {
+      if (manualControlRef.current || started) return;
+      if (event.target instanceof Element && event.target.closest(".music-toggle")) return;
+      // Call play synchronously inside the gesture handler for iOS Safari.
+      attemptPlayback();
+    }
+    function attemptPlayback() {
+      void audio!.play().then(() => {
+        if (disposed) return;
+        started = true;
+        removeListeners();
+      }).catch(() => {
+        // Keep listening when autoplay is blocked; the next tap can unlock it.
+      });
+    }
     audio.volume = 0.1;
-    void audio
-      .play()
-      .then(() => setPlaying(true))
-      .catch(() => setPlaying(false));
+    document.addEventListener("click", startOnInteraction);
+    document.addEventListener("touchend", startOnInteraction, { passive: true });
+    document.addEventListener("keydown", startOnInteraction);
+    attemptPlayback();
+    return () => {
+      disposed = true;
+      removeListeners();
+    };
   }, []);
 
   function toggleMusic() {
     const audio = audioRef.current;
     if (!audio) return;
+    manualControlRef.current = true;
     audio.volume = 0.1;
 
     if (audio.paused) {
@@ -42,6 +67,9 @@ export default function BackgroundMusic() {
         src="/music.mp3"
         preload="none"
         loop
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onError={() => setPlaying(false)}
       />
       <button
         className="music-toggle"
