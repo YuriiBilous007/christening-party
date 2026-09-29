@@ -183,7 +183,7 @@ function RSVP() {
               {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
             </select>
             {companions.map((person, i) => <div key={i}>
-              <label htmlFor={`adult-${i+2}`}>Ім’я та прізвище дорослого {i+2}</label>
+              <label htmlFor={`adult-${i+2}`}>Ім’я та прізвище {["другого", "третього", "четвертого"][i]} дорослого</label>
               <input id={`adult-${i+2}`} value={person} required maxLength={100} pattern={NAME_PATTERN} title="Англійські літери A–Z, пробіл, дефіс або апостроф" aria-describedby="name-hint" onChange={e => {
                 const value=e.target.value;
                 e.target.setCustomValidity(value && !isEnglishName(value) ? "Введіть ім’я та прізвище англійськими літерами (A–Z)." : "");
