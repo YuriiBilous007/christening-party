@@ -80,7 +80,7 @@ export async function GET() {
   if (!configured()) return Response.json({ configured: false, guests: [] });
   try {
     const response = await database(
-      "christening_rsvps?attendance=eq.yes&select=name,adults,children_count&order=created_at.asc&limit=1000",
+      "christening_rsvps?attendance=eq.yes&select=name,adult_2_name,adult_3_name,adult_4_name,adults,children_count&order=created_at.asc&limit=1000",
     );
     if (!response.ok) throw new Error("Database unavailable");
     return Response.json(

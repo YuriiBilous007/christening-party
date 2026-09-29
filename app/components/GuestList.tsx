@@ -1,6 +1,13 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-type Guest = { name: string; adults: number; children_count: number };
+type Guest = {
+  name: string;
+  adult_2_name?: string | null;
+  adult_3_name?: string | null;
+  adult_4_name?: string | null;
+  adults: number;
+  children_count: number;
+};
 export default function GuestList() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [status, setStatus] = useState<
@@ -30,6 +37,15 @@ export default function GuestList() {
   }, [load]);
   const adults = guests.reduce((sum, g) => sum + g.adults, 0),
     children = guests.reduce((sum, g) => sum + g.children_count, 0);
+  const people = guests.flatMap((g) =>
+    [g.name, g.adult_2_name, g.adult_3_name, g.adult_4_name]
+      .slice(0, g.adults)
+      .filter((name): name is string => typeof name === "string" && name.trim().length > 0)
+      .map((name, index) => ({
+        name,
+        children_count: index === 0 ? g.children_count : 0,
+      })),
+  );
   return (
     <section className="section guest-section" id="guests">
       <div className="section-heading">
@@ -68,7 +84,7 @@ export default function GuestList() {
           </div>
           {guests.length ? (
             <ul className="guest-list">
-              {guests.map((g, i) => (
+              {people.map((g, i) => (
                 <li key={i}>
                   <span className="guest-initial" aria-hidden="true">
                     {Array.from(g.name)[0]}
@@ -76,7 +92,7 @@ export default function GuestList() {
                   <div>
                     <h3>{g.name}</h3>
                     <p>
-                      Дорослих: {g.adults}
+                      Дорослих: 1
                       {g.children_count > 0 && ` · Дітей: ${g.children_count}`}
                     </p>
                   </div>

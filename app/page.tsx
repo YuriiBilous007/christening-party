@@ -282,15 +282,15 @@ function RSVP() {
             </p>
           </>
         )}
-        <p className="children-hint">
+        {attendance === "yes" && <p className="children-hint">
           Після підтвердження ваше ім’я та кількість гостей з’являться у
           відкритому списку «Будуть із нами».
-        </p>
+        </p>}
         <button className="button" type="submit">
           {status === "sending"
             ? "Надсилаємо…"
             : available
-              ? "Підтвердити присутність"
+              ? attendance === "yes" ? "Підтвердити присутність" : "Надіслати відповідь"
               : "Переглянути відповідь"}{" "}
           <span>
             <Icon name="arrow" />
